@@ -1,0 +1,5 @@
+echo a\ b c\ \ d        e
+echo aaaaaa     aa    aaa
+echo \ \ \ \  \ \
+echo a\ b c\ \ d        e
+echo aaaaaaaaaaaa a       aa  \    aaa \\  a\\a

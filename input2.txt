@@ -1,0 +1,5 @@
+./test_argument a\ b c\ \ d        e
+./test_argument aaaaaa     aa    aaa
+./test_argument \ \ \ \  \ \
+./test_argument a\ b c\ \ d        e
+./test_argument aaaaaaaaaaaa a       aa  \    aaa \\  a\\a

@@ -1,0 +1,110 @@
+Command Shell:
+
+(1)Run ./myShell < input1.txt
+You will see that it prints the string, which is correct because 1) myShell find command 'echo'without '/' in it from PATH environment; 2) parse the argument correctly, the space ' ' after\
+ '\' is considered as a character space ' '; 3) consecutive spaces ' 's not following '\' are also recognized and regarded as a delimiter of arguments for echo;
+ 
+
+(2)Run ./myShell < input2.txt
+
+    You will see that it prints
+    0 argument: test_argument has 13 characters
+    1 argument: a b has 3 characters.
+    2 argument: c  d has 4 characters.
+    3 argument: e has 1 characters.
+   , which is correct because 1)./test_argument is a program to print the arguments it received and the size of that argument, which is more clear to check space ' ', samely I will test the following command with this program; 2)myShell can find the program from current working directory 3) , which is correct because 1)myShell solve the "\ " and consecutive " "s according to commandshell.txt.
+
+
+(3)
+
+
+(5) Run aaabbbccc
+    You will see that it prints Command aaabbbccc not found, which is correct because myShell didn't find the command from PATH.
+
+(6) Run 1)set PATH qwe 2)echo $PATH
+    You will see that it prints /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games, which is correct because I didn't run export PATH.
+
+(7) Run 1)set PATH qwe 2)export PATH 3)echo $PATH
+    You will see that it prints
+    	Pathname fault:: No such file or directory
+	Command echo not found	
+    , which is correct because I change the environment variable and exported them, which affect my shell search for programs.
+
+(8) Run 1)set a 1 2)set b 2 3)set b 3 4)export a 5)export b 6)env 
+    You will see that it prints
+    	XDG_SESSION_ID=32580
+	TERM=xterm-256color
+	SHELL=/bin/bash
+	SSH_CLIENT=174.109.111.103 64685 22
+	SSH_TTY=/dev/pts/93
+	USER=zf29
+	LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+	MAIL=/var/mail/zf29
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+	PWD=/home/zf29/ece551/mp_miniproject
+	EDITOR=emacs -nw
+	LANG=en_US.UTF-8
+	SHLVL=1
+	HOME=/home/zf29
+	LOGNAME=zf29
+	VISUAL=emacs -nw
+	SSH_CONNECTION=174.109.111.103 64685 152.3.77.223 22
+	LESSOPEN=| /usr/bin/lesspipe %s
+	XDG_RUNTIME_DIR=/run/user/1034
+	LESSCLOSE=/usr/bin/lesspipe %s %s
+	OLDPWD=/home/zf29
+	_=./myShell
+	a=1
+	b=2
+	
+, which is correct because set a,b and c, but only export a and b, env print the environment variable passed to child process, a and b are printed out. This test is to test validity of export.
+
+(9) Run 1)set qwer !!! 2)set asdf ### 3)set zxcv $$$ 4)export qwer 5)export asdf 6)export zxcv 7)echo $$$$qwer$$$$asdf$$$zxcv$$$
+    You will see that it prints 4730347303qwer4730347303asdf47303$$$47303$, which is correct because myShell replace "$$" with "PID" which is 47303 as normal shell do, this step is to test the validity of parsing $ for variable name. Note that zxcv=$$$, so zxcv was replaced with $$$ by a valid $ before it.
+
+(10) Run 1)set jkl    \  sd 2)export jkl 3)echo $jkl
+    You will see that it prints    \  sd, which is correct because myShell set the variable jkl to the string on the rest of command line.
+
+(11) Run 1)export mmm
+    You will see that it prints variable mmm not found, which is correct because varible mmm hasn't been transferred into shell, this step is to check the validity of export.
+
+(12) Run 1)set nnn 2)export nnn 3) echo $nnn
+    You will see that it prints "", which is correct according to piazza, and this was passed into variable map, which is different from the previous mmm which is not passed into varible map.
+
+(13) Run 1)set 3rt 2)set / 5uie 3)set 789 4)set poi_\ e 5)set wie_we_123
+    You will see that the first of 4 commands print Error: invalid variable name, only the fifth set varible with value "" correctly, which is correct because of the validity of varible name.
+
+(14) Run 1)set argv 123456 2)export argv 3)set name ./test_argument 4)export name 5)$name $argv
+    You will see that it prints
+    	0 argument: test_argument has 13 characters.
+    	1 argument: 123456 has 6 characters.
+    , which is correct because myShell replace the varible with value and pass them to the child process.
+
+(15) Run 1)set PWD 1111 2)export PWD
+    You will see that it prints
+    	myShell:1111 $
+    Run 3)cd ..
+    You will see that it prints
+    	myShell:/home/zf29/ece551
+    Run 4)cd mp_miniproject
+    You will see that it prints
+    	myShell:/home/zf29/ece551/mp_miniproject $
+    Run 5) cd ../
+    You will see that it prints
+    	myShell:/home/zf29/ece551/053_sort_lines $    
+    , which is correct because 1)myShell can change directory name just as what normal shell do and update the name when it enter into a new directory. 2)the cd command can change into sub-directory and absolute directory.
+    
+(16) Run cd dsdkajdkasjd
+    You will see that it prints Error in cd command:: No such file or directory, which is correct because dsdkajdkasjd is not a sub-directory of this directory.
+
+(17) Run 1)cat README > out1 2> err1
+     Run 2)cat README 2> err2 > out2
+     Run 3)cat > out3 README 2> err3
+    You will see that all the out files are identical, so do err files(no error happened). Which is correct, this is to test the validity of different order of > < 2> .
+
+(18) Run ./test_error < README 2> err4 > out4
+    You will see that in err4: this is from error!
+    in out4: this is from stdout!
+    , which is correct because stdout and stderr using different file to output.
+
+    
